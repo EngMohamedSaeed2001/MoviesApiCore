@@ -34,7 +34,7 @@ namespace MoviesApiCore.Controllers
             };
 
 
-            await   _context.AddAsync(movie);
+            await  _context.AddAsync(movie);
             _context.SaveChangesAsync();
 
             return Ok(movie);
