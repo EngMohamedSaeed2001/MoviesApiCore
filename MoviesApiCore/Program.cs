@@ -16,6 +16,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddTransient<IGenresService, GenreService>();
 builder.Services.AddTransient<IMovieService, MovieService>();
+builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddSwaggerGen(options =>
 {

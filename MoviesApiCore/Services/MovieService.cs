@@ -13,8 +13,8 @@ namespace MoviesApiCore.Services
 
         public async Task<Movie> Add(Movie movie)
         {
-            await _context.AddAsync(movie);
-            _context.SaveChangesAsync();
+            await _context.Movies.AddAsync(movie);
+            _context.SaveChanges();
             return movie;
         }
 
@@ -41,7 +41,7 @@ namespace MoviesApiCore.Services
         public Movie Update(Movie movie)
         {
             _context.Update(movie);
-            _context.SaveChangesAsync();
+            _context.SaveChanges();
             return movie;
         }
     }
