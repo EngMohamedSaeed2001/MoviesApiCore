@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MoviesApiCore.NewFolder;
 using MoviesApiCore.NewFolder2;
 
 namespace MoviesApiCore.Controllers
@@ -8,17 +9,18 @@ namespace MoviesApiCore.Controllers
     [ApiController]
     public class GenresController : ControllerBase
     {
-       private readonly ApplicationDbContext _context;
+       private readonly IGenresService _genresService;
 
-        public GenresController(ApplicationDbContext context)
+        public GenresController( IGenresService genresService)
         {
-            _context = context;
+            
+            _genresService = genresService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {
-            var generes = await _context.Genres.OrderBy(g => g.Name).ToListAsync();
+            var generes = await _genresService.GetAll();
             return Ok(generes);
         }
 
@@ -27,8 +29,7 @@ namespace MoviesApiCore.Controllers
         {
             var genre = new Genre { Name =dTO.Name};
 
-            await _context.Genres.AddAsync(genre);
-            _context.SaveChanges();
+            _genresService.Add(genre);
 
             return Ok(genre);
         }
@@ -37,14 +38,13 @@ namespace MoviesApiCore.Controllers
 
         public async Task<IActionResult> UpdateAsync(int id,[FromBody]CreateGenreDTO dTo)
         {
-            var genre= await _context.Genres.SingleOrDefaultAsync(g => g.Id == id);
+            var genre= await _genresService.GetById(id);
 
-            if(genre==null)
+            if (genre==null)
                 return NotFound("Not found");
 
             genre.Name = dTo.Name;
-
-            _context.SaveChanges();
+            _genresService.Update(genre);
 
             return Ok(genre);
         }
@@ -53,14 +53,12 @@ namespace MoviesApiCore.Controllers
 
         public async Task<IActionResult> DeleteAsync(int id)
         {
-            var genre = await _context.Genres.SingleOrDefaultAsync(g =>g.Id == id);
+            var genre = await _genresService.GetById(id);
 
             if (genre == null)
                 return NotFound("Not found");
 
-            _context.Remove(genre); 
-
-            _context.SaveChanges(); 
+            _genresService.Delete(genre);
 
             return Ok();
         }

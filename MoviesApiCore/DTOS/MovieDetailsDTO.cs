@@ -1,21 +1,22 @@
 ﻿namespace MoviesApiCore.DTOS
 {
-    public class MovieDTO
+    public class MovieDetailsDTO
     {
-        [MaxLength(250)]
+        public int id { get; set; }
+
+     
         public string Title { get; set; }
 
         public int Year { get; set; }
 
         public double Rate { get; set; }
 
-        [MaxLength(2500)]
+       
         public string StoryLine { get; set; }
 
-        public IFormFile? Poster { get; set; }
+        public byte[] Poster { get; set; }
 
-        public int GenreId { get; set; }
-
-       
+        public int GenreId {  get; set; }
+        public string GenreName { get; set; }
     }
 }
